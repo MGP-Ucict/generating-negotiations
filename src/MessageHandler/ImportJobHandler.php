@@ -136,7 +136,8 @@ class ImportJobHandler
             $em->flush();
             $i++;         
         }
-        $this->publishNegotiation($negotiations[$negotiationCounter-1], $em);
+        $negInd = ($negotiationCounter >= 1) ? $negotiationCounter - 1 : 0;
+        $this->publishNegotiation($negotiations[$negInd], $em);
 
         $fileArchive = new FileArchive();
         $fileArchive->setPath($fileName);
