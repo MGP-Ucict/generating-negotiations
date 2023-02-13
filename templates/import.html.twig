@@ -1,0 +1,41 @@
+{% block body %}
+<div class = "container">
+
+<br>
+    <h1>File import</h1>
+
+    {{ form_start(uploadForm) }}
+
+    <ul class="errorMessages errorMessage">
+    </ul>
+    {% if message is defined %}
+        <ul class="errorMessage" style="display:block">
+            {{ message }}
+        </ul>
+    {% endif %}
+   {% for flashMessage in app.session.flashbag.get('error') %}
+   <div class="alert alert-danger">
+    {{ flashMessage }}
+   </div>
+   {% endfor %}
+   {% for flashMessage in app.session.flashbag.get('success') %}
+   <div class="alert alert-danger">
+    {{ flashMessage }}
+   </div>
+   {% endfor %}
+   After importing data, the result file will download in folder Downloads.
+    <table class="records_list table table-striped table-condensed">
+        <tr>
+            <td style="text-align: center;">
+               	{{ form_label(uploadForm.file, null, {'label_attr' : {'class' : 'btn btn-danger btn-small'} }) }}
+                {{ form_widget(uploadForm.file, {'attr': {'class' : 'chooseFile'} }) }}
+            </td>
+            <td style="text-align: center;">
+                {{ form_widget(uploadForm.Submit, {'attr': {'class': 'btn btn-success btn-small'} }) }}
+            </td>
+            {{ form_end(uploadForm) }}
+        </tr>
+    </table>
+
+</div>
+{% endblock %}
