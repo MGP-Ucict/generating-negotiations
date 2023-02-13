@@ -12,4 +12,4 @@ php bin\console server:run
 
 go to route localhost:8000/import
 
-import a csv, xls, xlsx file and wait unitl it is downloaded
+import a csv, xls, xlsx file and wait until it is downloaded
