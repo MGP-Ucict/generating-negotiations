@@ -98,7 +98,7 @@ class ImportController extends AbstractController
             $em->flush();      
             $response = new BinaryFileResponse($fileArchive->getPath());
             $response->headers->set ( 'Content-Type', 'text/plain' );
-            $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, "result_".time(). ".txt" );
+            // $response->setContentDisposition ( ResponseHeaderBag::DISPOSITION_ATTACHMENT, "result_".time(). ".txt" );
             return $response;
         }
         return $this->render('import.html.twig', array(
