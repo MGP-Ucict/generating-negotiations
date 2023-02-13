@@ -78,8 +78,6 @@ class ImportJobHandler
             }
         }
         $sortedItems = array_merge($fullDataItem, $notFullDataItem);
-      
-        //dd($sortedItems);
         return $sortedItems;
 
     }
@@ -100,23 +98,16 @@ class ImportJobHandler
         $sortedItems = $this->sortItems($items, $doctrine);
         foreach ($sortedItems as $item)
         {
-            // if (!$negotiationCounter) {
-            //     file_put_contents($fileName, "\r\n" . ' Item: '. $item->getName() .':', FILE_APPEND);
-            // }
-            // $filesystem->appendToFile($fileName, PHP_EOL. ' Item: '. $item->getName() .':');
             $itemId = $item->getId();
             $allAvailableOffersForItem = $doctrine->getRepository(Offer::class)->findByItemId($itemId);
-            //dd($allAvailableOffersForItem);
             $allUnavailableOffersForItem = $doctrine->getRepository(Offer::class)->findBy([
                 'item_id' => $itemId,
                 'price'   => NULL
             ]);
             if (!count($allUnavailableOffersForItem)){
                 if (empty($negotiations) || $hasUnavailableBefore) {
-                    //dd(123, $negotiationCounter);
                     $negotiations[$negotiationCounter] = $this->createNegotiation($negotiationCounter, $em);
                     $this->publishNegotiation($negotiations[$negotiationCounter], $em);
-                    // $filesystem->appendToFile($fileName, PHP_EOL . $negotiationName . PHP_EOL);
                     file_put_contents($fileName, "\r\n\n". $negotiations[$negotiationCounter]->getName() . "\r\n", FILE_APPEND);
                     $this->setOffersNegotiationId($em, $item, $allAvailableOffersForItem, $negotiations[$negotiationCounter], $fileName);
                     if ($hasUnavailableBefore && !$i) {
@@ -132,14 +123,10 @@ class ImportJobHandler
                 $hasUnavailableBefore = true;
 
                 if ($negotiationCounter) {
-                    //dd($negotiationCounter, $negotiations);
                     $this->publishNegotiation($negotiations[$negotiationCounter - 1], $em);
-                //new Negotiation
-                //dd($negotiationCounter);
                 }
                 $negotiationIndex = (empty($negotiations)) ? $negotiationCounter : $negotiationCounter + 1;
                 $negotiations[$negotiationCounter] = $this->createNegotiation($negotiationIndex, $em);
-                // $filesystem->appendToFile($fileName, PHP_EOL. $negotiationName . PHP_EOL);
                 file_put_contents($fileName, "\r\n\n". $negotiations[$negotiationCounter]->getName() . "\r\n", FILE_APPEND);
                 $this->setOffersNegotiationId($em, $item, $allAvailableOffersForItem, $negotiations[$negotiationCounter], $fileName);
                 $negotiationCounter++;
@@ -181,7 +168,6 @@ class ImportJobHandler
             $em->persist($offer);
             $em->flush();
             file_put_contents($fileName, '|Offer: '. $offer->getName() .' , price: '. $offer->getPrice(), FILE_APPEND);
-            // $filesystem->appendToFile($fileName, '|Offer: '. $offer->getName() .' , price: '. $offer->getPrice());
         }
     }
 }
